@@ -1,0 +1,335 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Knowledge Sharing | Farmer Advisory Platform</title>
+
+    <style>
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f3f8f2;
+            color: #26352b;
+        }
+
+        header {
+            background: #176b3a;
+            color: white;
+            padding: 18px 6%;
+        }
+
+        header h2 { margin: 0 0 12px; }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin-right: 15px;
+            display: inline-block;
+            padding: 5px 0;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 30px auto;
+            padding: 0 18px;
+        }
+
+        .hero, .form-card, .post {
+            background: white;
+            padding: 22px;
+            border-radius: 12px;
+            margin-bottom: 22px;
+            box-shadow: 0 3px 12px #0000000d;
+        }
+
+        h1, h2 { color: #176b3a; }
+
+        .hero h1 { margin-top: 0; }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin: 15px 0 7px;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccd7ce;
+            border-radius: 7px;
+            font: inherit;
+        }
+
+        textarea {
+            min-height: 110px;
+            resize: vertical;
+        }
+
+        button {
+            border: none;
+            background: #176b3a;
+            color: white;
+            padding: 12px 18px;
+            border-radius: 7px;
+            cursor: pointer;
+            font-size: 15px;
+            margin-top: 15px;
+        }
+
+        button:hover { background: #10552d; }
+
+        .delete-btn {
+            background: #a52b2b;
+            padding: 8px 12px;
+            margin-top: 8px;
+        }
+
+        .post-meta {
+            color: #69766c;
+            font-size: 13px;
+        }
+
+        .post-content {
+            white-space: pre-wrap;
+            line-height: 1.6;
+            overflow-wrap: anywhere;
+        }
+
+        .empty {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            color: #647168;
+        }
+
+        .notice {
+            background: #fff4d6;
+            padding: 14px;
+            border-radius: 8px;
+            line-height: 1.5;
+        }
+
+        footer {
+            background: #176b3a;
+            color: white;
+            text-align: center;
+            padding: 18px;
+            margin-top: 40px;
+        }
+
+        @media (max-width: 600px) {
+            header { padding: 18px; }
+            .hero, .form-card, .post { padding: 16px; }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h2>🌾 Farmer Advisory Platform</h2>
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="dashboard.html">Dashboard</a>
+        <a href="ai-assistant.html">AI Assistant</a>
+        <a href="crop-advisory.html">Crop Advisory</a>
+        <a href="mandi.html">Mandi Prices</a>
+        <a href="knowledge-sharing.html">Knowledge Sharing</a>
+    </nav>
+</header>
+
+<main class="container">
+
+    <section class="hero">
+        <h1>🤝 Farmer Knowledge-Sharing Community</h1>
+        <p>
+            Ask questions, share farming experiences, and learn practical
+            tips from the farming community.
+        </p>
+    </section>
+
+    <section class="form-card">
+        <h2>✍️ Create a Post</h2>
+
+        <form id="postForm">
+            <label for="farmerName">Your Name</label>
+            <input id="farmerName" maxlength="60"
+                   placeholder="Enter your name" required>
+
+            <label for="category">Post Category</label>
+            <select id="category" required>
+                <option value="Question">Ask a Question</option>
+                <option value="Farming Tip">Farming Tip</option>
+                <option value="Crop Disease">Crop Disease</option>
+                <option value="Irrigation">Irrigation</option>
+                <option value="Salt Production">Salt Production</option>
+                <option value="Other">Other</option>
+            </select>
+
+            <label for="postTitle">Post Title</label>
+            <input id="postTitle" maxlength="120"
+                   placeholder="Example: How can I protect tomato plants?" required>
+
+            <label for="postContent">Your Question or Tip</label>
+            <textarea id="postContent" maxlength="2000"
+                      placeholder="Write your question or share your experience..."
+                      required></textarea>
+
+            <button type="submit">Publish Post</button>
+        </form>
+    </section>
+
+    <section>
+        <h2>🌱 Community Posts</h2>
+
+        <label for="filterCategory">Filter by Category</label>
+        <select id="filterCategory" onchange="displayPosts()">
+            <option value="All">All Categories</option>
+            <option value="Question">Questions</option>
+            <option value="Farming Tip">Farming Tips</option>
+            <option value="Crop Disease">Crop Disease</option>
+            <option value="Irrigation">Irrigation</option>
+            <option value="Salt Production">Salt Production</option>
+            <option value="Other">Other</option>
+        </select>
+
+        <div id="postsContainer" style="margin-top:20px;"></div>
+    </section>
+
+    <div class="notice">
+        <strong>Project note:</strong> Posts are stored only in this browser.
+        They are not shared with other users or devices. Do not post passwords,
+        phone numbers, or other private information.
+    </div>
+
+</main>
+
+<footer>
+    <p>© 2026 AI-Powered Farmer Advisory and Knowledge-Sharing Platform</p>
+</footer>
+
+<script>
+    const STORAGE_KEY = "farmerCommunityPosts";
+
+    function getPosts() {
+        try {
+            const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+            return Array.isArray(saved) ? saved : [];
+        } catch (error) {
+            return [];
+        }
+    }
+
+    function savePosts(posts) {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(posts));
+    }
+
+    document.getElementById("postForm").addEventListener("submit", function(event) {
+        event.preventDefault();
+
+        const name = document.getElementById("farmerName").value.trim();
+        const category = document.getElementById("category").value;
+        const title = document.getElementById("postTitle").value.trim();
+        const content = document.getElementById("postContent").value.trim();
+
+        if (!name || !title || !content) {
+            alert("Please fill in all fields.");
+            return;
+        }
+
+        const posts = getPosts();
+
+        posts.unshift({
+            id: Date.now().toString() + Math.random().toString(16).slice(2),
+            name: name,
+            category: category,
+            title: title,
+            content: content,
+            date: new Date().toLocaleString()
+        });
+
+        try {
+            savePosts(posts);
+        } catch (error) {
+            alert("Unable to save the post. Browser storage may be full.");
+            return;
+        }
+
+        this.reset();
+        displayPosts();
+        alert("Your post has been published!");
+    });
+
+    function displayPosts() {
+        const container = document.getElementById("postsContainer");
+        const filter = document.getElementById("filterCategory").value;
+
+        const posts = getPosts().filter(post =>
+            filter === "All" || post.category === filter
+        );
+
+        container.replaceChildren();
+
+        if (posts.length === 0) {
+            const message = document.createElement("div");
+            message.className = "empty";
+            message.textContent =
+                "No posts in this category yet. Be the first to share something!";
+            container.appendChild(message);
+            return;
+        }
+
+        posts.forEach(post => {
+            const card = document.createElement("article");
+            card.className = "post";
+
+            const title = document.createElement("h3");
+            title.textContent = post.title;
+
+            const meta = document.createElement("p");
+            meta.className = "post-meta";
+            meta.textContent =
+                "By " + post.name + " | " + post.category + " | " + post.date;
+
+            const content = document.createElement("p");
+            content.className = "post-content";
+            content.textContent = post.content;
+
+            card.append(title, meta, content);
+
+            const deleteButton = document.createElement("button");
+            deleteButton.className = "delete-btn";
+            deleteButton.textContent = "Delete Post";
+            deleteButton.type = "button";
+
+            deleteButton.addEventListener("click", function() {
+                if (confirm("Delete this post from this browser?")) {
+                    const updatedPosts = getPosts().filter(
+                        item => item.id !== post.id
+                    );
+                    savePosts(updatedPosts);
+                    displayPosts();
+                }
+            });
+
+            card.appendChild(deleteButton);
+            container.appendChild(card);
+        });
+    }
+
+    // Fill the name using the existing demo registration, if available.
+    const savedName = localStorage.getItem("farmerName");
+    if (savedName) {
+        document.getElementById("farmerName").value = savedName;
+    }
+
+    displayPosts();
+</script>
+
+</body>
+</html>
+22

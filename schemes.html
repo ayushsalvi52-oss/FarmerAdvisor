@@ -1,0 +1,318 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Government Schemes | Farmer Advisory Platform</title>
+
+    <style>
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f3f8f2;
+            color: #26352b;
+        }
+
+        header {
+            background: #176b3a;
+            color: white;
+            padding: 18px 6%;
+        }
+
+        header h2 { margin: 0 0 12px; }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin-right: 14px;
+            display: inline-block;
+            padding: 5px 0;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 30px auto;
+            padding: 0 18px;
+        }
+
+        .hero, .scheme-card {
+            background: white;
+            padding: 22px;
+            border-radius: 12px;
+            box-shadow: 0 3px 12px #0000000d;
+        }
+
+        .hero { margin-bottom: 25px; }
+
+        h1, h2 { color: #176b3a; }
+
+        .hero h1 { margin-top: 0; }
+
+        .filters {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 14px;
+            margin-bottom: 24px;
+        }
+
+        .filters input, .filters select {
+            flex: 1;
+            min-width: 200px;
+            padding: 12px;
+            border: 1px solid #cbd7cd;
+            border-radius: 7px;
+            font-size: 15px;
+            background: white;
+        }
+
+        .scheme-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 20px;
+        }
+
+        .scheme-card {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .scheme-icon {
+            font-size: 36px;
+            background: #e7f3e9;
+            padding: 15px;
+            border-radius: 9px;
+            text-align: center;
+        }
+
+        .scheme-card h3 {
+            color: #176b3a;
+            margin: 0;
+            line-height: 1.4;
+        }
+
+        .scheme-card p {
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        .scheme-card .type {
+            color: #647168;
+            font-size: 13px;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .scheme-card a {
+            display: inline-block;
+            text-decoration: none;
+            color: white;
+            background: #176b3a;
+            padding: 11px 14px;
+            border-radius: 6px;
+            text-align: center;
+            margin-top: auto;
+        }
+
+        .scheme-card a:hover { background: #10552d; }
+
+        .notice {
+            background: #fff4d6;
+            padding: 16px;
+            border-radius: 8px;
+            margin-top: 25px;
+            line-height: 1.6;
+        }
+
+        .empty {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        footer {
+            background: #176b3a;
+            color: white;
+            text-align: center;
+            padding: 18px;
+            margin-top: 40px;
+        }
+
+        @media (max-width: 600px) {
+            header { padding: 18px; }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h2>🌾 Farmer Advisory Platform</h2>
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="dashboard.html">Dashboard</a>
+        <a href="ai-assistant.html">AI Assistant</a>
+        <a href="crop-advisory.html">Crop Advisory</a>
+        <a href="weather.html">Weather</a>
+        <a href="mandi.html">Mandi Prices</a>
+        <a href="knowledge-sharing.html">Knowledge Sharing</a>
+        <a href="news.html">Agriculture News</a>
+        <a href="schemes.html">Government Schemes</a>
+    </nav>
+</header>
+
+<main class="container">
+
+    <section class="hero">
+        <h1>🏛️ Government Schemes for Farmers</h1>
+        <p>
+            Explore selected Indian government programmes related to farmer
+            income support, crop insurance, soil health, and agricultural
+            infrastructure.
+        </p>
+        <p>Always check the official portal for current rules and eligibility.</p>
+    </section>
+
+    <section class="filters">
+        <input
+            type="search"
+            id="searchInput"
+            placeholder="Search schemes..."
+            oninput="displaySchemes()"
+        >
+
+        <select id="categoryFilter" onchange="displaySchemes()">
+            <option value="All">All Categories</option>
+            <option value="Income Support">Income Support</option>
+            <option value="Crop Insurance">Crop Insurance</option>
+            <option value="Soil Health">Soil Health</option>
+            <option value="Agriculture Infrastructure">Agriculture Infrastructure</option>
+        </select>
+    </section>
+
+    <section id="schemeGrid" class="scheme-grid"></section>
+
+    <p id="noResults" class="empty" style="display:none;">
+        No matching schemes found. Try another search.
+    </p>
+
+    <div class="notice">
+        <strong>Important:</strong> This page is an informational guide, not an
+        official government service. Eligibility, benefits, application dates
+        and programme rules may change. Verify all details through the linked
+        government websites before applying. Listing a scheme does not mean
+        that applications are currently open.
+    </div>
+
+</main>
+
+<footer>
+    <p>© 2026 AI-Powered Farmer Advisory and Knowledge-Sharing Platform</p>
+</footer>
+
+<script>
+    const schemes = [
+        {
+            name: "PM-KISAN",
+            category: "Income Support",
+            icon: "💰",
+            description:
+                "Provides income support to eligible landholding farmer families under the scheme's rules.",
+            eligibility:
+                "Eligibility and exclusions apply. Check the official portal for current requirements.",
+            url: "https://pmkisan.gov.in/"
+        },
+        {
+            name: "Pradhan Mantri Fasal Bima Yojana",
+            category: "Crop Insurance",
+            icon: "🌾",
+            description:
+                "A crop insurance programme intended to help eligible farmers manage specified crop-loss risks.",
+            eligibility:
+                "Availability, notified crops, insurance terms and enrolment deadlines vary by area and season.",
+            url: "https://pmfby.gov.in/"
+        },
+        {
+            name: "Soil Health Card",
+            category: "Soil Health",
+            icon: "🌱",
+            description:
+                "Supports soil testing and provides information that can help farmers manage nutrients appropriately.",
+            eligibility:
+                "Contact the local agriculture department or soil testing facility for the applicable process.",
+            url: "https://soilhealth.dac.gov.in/"
+        },
+        {
+            name: "Agriculture Infrastructure Fund",
+            category: "Agriculture Infrastructure",
+            icon: "🏗️",
+            description:
+                "Supports eligible agricultural infrastructure projects through financing arrangements under its rules.",
+            eligibility:
+                "Eligible beneficiaries, project types and financing conditions must be verified officially.",
+            url: "https://agriinfra.dac.gov.in/"
+        }
+    ];
+
+    function displaySchemes() {
+        const search = document.getElementById("searchInput")
+            .value.trim().toLowerCase();
+
+        const category = document.getElementById("categoryFilter").value;
+
+        const filtered = schemes.filter(scheme => {
+            const text = (
+                scheme.name + " " + scheme.description + " " +
+                scheme.category + " " + scheme.eligibility
+            ).toLowerCase();
+
+            return text.includes(search) &&
+                   (category === "All" || scheme.category === category);
+        });
+
+        const grid = document.getElementById("schemeGrid");
+        grid.replaceChildren();
+
+        filtered.forEach(scheme => {
+            const card = document.createElement("article");
+            card.className = "scheme-card";
+
+            const icon = document.createElement("div");
+            icon.className = "scheme-icon";
+            icon.textContent = scheme.icon;
+
+            const type = document.createElement("div");
+            type.className = "type";
+            type.textContent = scheme.category;
+
+            const title = document.createElement("h3");
+            title.textContent = scheme.name;
+
+            const description = document.createElement("p");
+            description.textContent = scheme.description;
+
+            const eligibility = document.createElement("p");
+            eligibility.textContent = "Eligibility: " + scheme.eligibility;
+
+            const link = document.createElement("a");
+            link.href = scheme.url;
+            link.target = "_blank";
+            link.rel = "noopener noreferrer";
+            link.textContent = "Visit Official Website ↗";
+
+            card.append(icon, type, title, description, eligibility, link);
+            grid.appendChild(card);
+        });
+
+        document.getElementById("noResults").style.display =
+            filtered.length === 0 ? "block" : "none";
+    }
+
+    displaySchemes();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,389 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Salt Production | Farmer Advisory Platform</title>
+
+    <style>
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f2f7f5;
+            color: #293831;
+        }
+
+        header {
+            background: #176b3a;
+            color: white;
+            padding: 18px 6%;
+        }
+
+        header h2 { margin: 0 0 12px; }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin-right: 14px;
+            display: inline-block;
+            padding: 5px 0;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 30px auto;
+            padding: 0 18px;
+        }
+
+        .hero, .card, .table-box, .form-box {
+            background: white;
+            padding: 22px;
+            border-radius: 12px;
+            box-shadow: 0 3px 12px #0000000d;
+        }
+
+        .hero {
+            background: linear-gradient(135deg, #e0f4e5, #e1f1f5);
+            margin-bottom: 24px;
+        }
+
+        h1, h2 { color: #176b3a; }
+
+        .hero h1 {
+            font-size: 32px;
+            margin-top: 0;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+            gap: 18px;
+            margin: 24px 0;
+        }
+
+        .card p { color: #637269; }
+
+        .number {
+            color: #176b3a;
+            font-size: 27px;
+            font-weight: bold;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 18px;
+            margin: 24px 0;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin: 14px 0 7px;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #cbd7cd;
+            border-radius: 7px;
+            font-size: 15px;
+        }
+
+        button {
+            background: #176b3a;
+            color: white;
+            border: none;
+            padding: 12px 18px;
+            border-radius: 7px;
+            cursor: pointer;
+            margin-top: 15px;
+        }
+
+        button:hover { background: #10552d; }
+
+        .table-box {
+            overflow-x: auto;
+            margin: 24px 0;
+        }
+
+        table {
+            width: 100%;
+            min-width: 600px;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            text-align: left;
+            padding: 13px;
+            border-bottom: 1px solid #e2e9e3;
+        }
+
+        th {
+            background: #e7f3e9;
+            color: #176b3a;
+        }
+
+        .notice {
+            padding: 16px;
+            background: #fff4d6;
+            border-radius: 8px;
+            line-height: 1.6;
+            margin: 24px 0;
+        }
+
+        footer {
+            background: #176b3a;
+            color: white;
+            text-align: center;
+            padding: 18px;
+            margin-top: 40px;
+        }
+
+        @media (max-width: 600px) {
+            header { padding: 18px; }
+            .hero h1 { font-size: 26px; }
+            .hero, .card, .table-box, .form-box { padding: 16px; }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h2>🌾 Farmer Advisory Platform</h2>
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="dashboard.html">Dashboard</a>
+        <a href="ai-assistant.html">AI Assistant</a>
+        <a href="crop-advisory.html">Crop Advisory</a>
+        <a href="weather.html">Weather</a>
+        <a href="mandi.html">Mandi Prices</a>
+        <a href="schemes.html">Government Schemes</a>
+        <a href="salt-production.html">Salt Production</a>
+    </nav>
+</header>
+
+<main class="container">
+
+    <section class="hero">
+        <h1>🧂 Wadala Salt Pan Production Advisory</h1>
+        <p>
+            Monitor sample salt production, stock, sales, expenses and weather
+            conditions in one place. This module is part of our wider
+            AI-Powered Farmer Advisory and Knowledge-Sharing Platform.
+        </p>
+        <p><strong>Project location:</strong> Wadala Salt Pan, Mumbai, Maharashtra</p>
+    </section>
+
+    <section class="stats">
+        <div class="card">
+            <p>Today's Production</p>
+            <div class="number" id="todayProduction">12.5 tonnes</div>
+        </div>
+
+        <div class="card">
+            <p>Available Stock</p>
+            <div class="number" id="availableStock">245 tonnes</div>
+        </div>
+
+        <div class="card">
+            <p>Today's Sales</p>
+            <div class="number" id="todaySales">8 tonnes</div>
+        </div>
+
+        <div class="card">
+            <p>Production Cost</p>
+            <div class="number" id="productionCost">₹3,500</div>
+            <p>Sample cost per tonne</p>
+        </div>
+    </section>
+
+    <h2>📋 Sample Production Records</h2>
+
+    <section class="table-box">
+        <table>
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Production (tonnes)</th>
+                    <th>Sales (tonnes)</th>
+                    <th>Stock (tonnes)</th>
+                    <th>Weather</th>
+                </tr>
+            </thead>
+
+            <tbody id="productionTable"></tbody>
+        </table>
+    </section>
+
+    <h2>➕ Add a Production Record</h2>
+
+    <section class="form-box">
+        <form id="productionForm">
+            <label for="recordDate">Date</label>
+            <input type="date" id="recordDate" required>
+
+            <label for="production">Production (tonnes)</label>
+            <input type="number" id="production" min="0" step="0.1"
+                   placeholder="Example: 12.5" required>
+
+            <label for="sales">Sales (tonnes)</label>
+            <input type="number" id="sales" min="0" step="0.1"
+                   placeholder="Example: 8" required>
+
+            <label for="weather">Weather Condition</label>
+            <select id="weather" required>
+                <option value="Sunny">Sunny</option>
+                <option value="Partly Cloudy">Partly Cloudy</option>
+                <option value="Cloudy">Cloudy</option>
+                <option value="Rainy">Rainy</option>
+            </select>
+
+            <button type="submit">Save Record</button>
+        </form>
+    </section>
+
+    <div class="notice">
+        <strong>Important — Demo data:</strong> The figures shown on this page
+        are fictional values for college-project demonstration. They are not
+        verified Wadala Salt Pan Company records. New records are stored in
+        this browser only. For actual operational decisions, use verified
+        company data and local weather observations.
+    </div>
+
+</main>
+
+<footer>
+    <p>© 2026 AI-Powered Farmer Advisory and Knowledge-Sharing Platform</p>
+</footer>
+
+<script>
+    const STORAGE_KEY = "saltProductionRecords";
+
+    const sampleRecords = [
+        {date:"2026-09-10", production:12.5, sales:8, stock:245, weather:"Sunny"},
+        {date:"2026-09-09", production:10.0, sales:7, stock:240.5, weather:"Partly Cloudy"},
+        {date:"2026-09-08", production:13.0, sales:9, stock:237.5, weather:"Sunny"},
+        {date:"2026-09-07", production:8.5, sales:6, stock:233.5, weather:"Cloudy"},
+        {date:"2026-09-06", production:0, sales:5, stock:231, weather:"Rainy"}
+    ];
+
+    function loadRecords() {
+        try {
+            const saved = localStorage.getItem(STORAGE_KEY);
+            return saved === null ? [...sampleRecords] : JSON.parse(saved);
+        } catch (error) {
+            return [...sampleRecords];
+        }
+    }
+
+    let records = loadRecords();
+
+    function saveRecords() {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(records));
+    }
+
+    function formatNumber(value) {
+        return Number(value).toLocaleString("en-IN", {
+            maximumFractionDigits: 1
+        });
+    }
+
+    function displayRecords() {
+        const table = document.getElementById("productionTable");
+        table.replaceChildren();
+
+        records.forEach(record => {
+            const row = document.createElement("tr");
+
+            [
+                record.date,
+                formatNumber(record.production),
+                formatNumber(record.sales),
+                formatNumber(record.stock),
+                record.weather
+            ].forEach(value => {
+                const cell = document.createElement("td");
+                cell.textContent = value;
+                row.appendChild(cell);
+            });
+
+            table.appendChild(row);
+        });
+
+        if (records.length > 0) {
+            const latest = records[0];
+            document.getElementById("todayProduction").textContent =
+                formatNumber(latest.production) + " tonnes";
+
+            document.getElementById("todaySales").textContent =
+                formatNumber(latest.sales) + " tonnes";
+
+            document.getElementById("availableStock").textContent =
+                formatNumber(latest.stock) + " tonnes";
+        }
+    }
+
+    document.getElementById("recordDate").value =
+        new Date().toLocaleDateString("en-CA");
+
+    document.getElementById("productionForm").addEventListener("submit", function(event) {
+        event.preventDefault();
+
+        const date = document.getElementById("recordDate").value;
+        const production = Number(document.getElementById("production").value);
+        const sales = Number(document.getElementById("sales").value);
+        const weather = document.getElementById("weather").value;
+
+        if (!date || production < 0 || sales < 0 ||
+            !Number.isFinite(production) || !Number.isFinite(sales)) {
+            alert("Please enter a valid date and non-negative values.");
+            return;
+        }
+
+        // Use the latest saved stock to calculate the new stock.
+        const previousStock = records.length > 0
+            ? Number(records[0].stock)
+            : 0;
+
+        if (sales > previousStock + production) {
+            alert("Sales cannot exceed available stock plus new production.");
+            return;
+        }
+
+        const newRecord = {
+            date: date,
+            production: production,
+            sales: sales,
+            stock: previousStock + production - sales,
+            weather: weather
+        };
+
+        records.unshift(newRecord);
+
+        try {
+            saveRecords();
+        } catch (error) {
+            records.shift();
+            alert("Unable to save this record in browser storage.");
+            return;
+        }
+
+        displayRecords();
+        this.reset();
+
+        document.getElementById("recordDate").value =
+            new Date().toLocaleDateString("en-CA");
+
+        alert("Production record saved successfully!");
+    });
+
+    displayRecords();
+</script>
+
+</body>
+</html>

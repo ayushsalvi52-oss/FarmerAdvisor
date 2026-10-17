@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Farmer Dashboard - FarmerAdvisor</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        .dashboard {
+            max-width: 1200px;
+            margin: auto;
+            padding: 45px 25px;
+        }
+
+        .welcome-box {
+            background: #e8f3e3;
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+        }
+
+        .welcome-box h1 {
+            margin-bottom: 10px;
+        }
+
+        .welcome-box p {
+            color: #5f6c61;
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .dashboard-card {
+            background: white;
+            padding: 28px;
+            border-radius: 12px;
+            border: 1px solid #e1e8df;
+            transition: 0.3s;
+        }
+
+        .dashboard-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+        }
+
+        .dashboard-icon {
+            font-size: 42px;
+            margin-bottom: 15px;
+        }
+
+        .dashboard-card h3 {
+            margin-bottom: 10px;
+        }
+
+        .dashboard-card p {
+            color: #69746c;
+            line-height: 1.5;
+            margin-bottom: 18px;
+        }
+
+        .dashboard-card a {
+            text-decoration: none;
+            color: #4d8b36;
+            font-weight: bold;
+        }
+
+        .logout-btn {
+            border: none;
+            background: #d9534f;
+            color: white;
+            padding: 9px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .quick-info {
+            margin-top: 35px;
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            border: 1px solid #e1e8df;
+        }
+
+        .quick-info h2 {
+            margin-bottom: 20px;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+        }
+
+        .info-box {
+            background: #f4f8f2;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .info-box strong {
+            display: block;
+            font-size: 24px;
+            margin-bottom: 5px;
+            color: #4d8b36;
+        }
+
+        @media (max-width: 900px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .info-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+
+</head>
+
+
+<body>
+
+<!-- NAVIGATION -->
+
+<header>
+
+    <nav class="navbar">
+
+        <div class="logo">
+            🌾 Farmer<span>Advisor</span>
+        </div>
+
+        <ul class="nav-links">
+
+            <li>
+                <a href="index.html">Home</a>
+            </li>
+
+            <li>
+                <a href="ai-assistant.html">AI Assistant</a>
+            </li>
+
+            <li>
+                <a href="crop-advisory.html">Crop Advisory</a>
+            </li>
+
+            <li>
+                <a href="weather.html">Weather</a>
+            </li>
+
+            <li>
+                <a href="mandi.html">Mandi Prices</a>
+            </li>
+
+            <li>
+                <a href="knowledge-sharing.html">Community</a>
+            </li>
+
+        </ul>
+
+        <button class="logout-btn" onclick="logout()">
+            Logout
+        </button>
+
+    </nav>
+
+</header>
+
+
+<!-- DASHBOARD -->
+
+<main class="dashboard">
+
+
+    <!-- WELCOME -->
+
+    <section class="welcome-box">
+
+        <h1>
+            Welcome, <span id="farmerName">Farmer</span> 👨‍🌾
+        </h1>
+
+        <p>
+            Welcome to your Farmer Advisory Dashboard.
+            Get smart farming information and AI-powered advice.
+        </p>
+
+    </section>
+
+
+    <!-- DASHBOARD FEATURES -->
+
+    <section class="dashboard-grid">
+
+
+        <!-- AI -->
+
+        <div class="dashboard-card">
+
+            <div class="dashboard-icon">
+                🤖
+            </div>
+
+            <h3>AI Farmer Assistant</h3>
+
+            <p>
+                Ask questions about crops, fertilizers,
+                irrigation, pests and diseases.
+            </p>
+
+            <a href="ai-assistant.html">
+                Ask AI →
+            </a>
+
+        </div>
+
+
+        <!-- CROP -->
+
+        <div class="dashboard-card">
+
+            <div class="dashboard-icon">
+                🌱
+            </div>
+
+            <h3>Crop Advisory</h3>
+
+            <p>
+                Get useful information about crops,
+                soil, fertilizer and harvesting.
+            </p>
+
+            <a href="crop-advisory.html">
+                View Crops →
+            </a>
+
+        </div>
+
+
+        <!-- WEATHER -->
+
+        <div class="dashboard-card">
+
+            <div class="dashboard-icon">
+                🌦️
+            </div>
+
+            <h3>Weather Advisory</h3>
+
+            <p>
+                Check weather conditions and
+                farming recommendations.
+            </p>
+
+            <a href="weather.html">
+                Check Weather →
+            </a>
+
+        </div>
+
+
+        <!-- MANDI -->
+
+        <div class="dashboard-card">
+
+            <div class="dashboard-icon">
+                📈
+            </div>
+
+            <h3>Mandi Prices</h3>
+
+            <p>
+                Check current crop market prices
+                and market information.
+            </p>
+
+            <a href="mandi.html">
+                View Prices →
+            </a>
+
+        </div>
+
+
+        <!-- KNOWLEDGE -->
+
+        <div class="dashboard-card">
+
+            <div class="dashboard-icon">
+                💬
+            </div>
+
+            <h3>Knowledge Sharing</h3>
+
+            <p>
+                Ask questions and share farming
+                knowledge with the community.
+            </p>
+
+            <a href="knowledge-sharing.html">
+                Join Community →
+            </a>
+
+        </div>
+
+
+        <!-- SALT -->
+
+        <div class="dashboard-card">
+
+            <div class="dashboard-icon">
+                🧂
+            </div>
+
+            <h3>Salt Production</h3>
+
+            <p>
+                View Wadala Salt Pan production,
+                stock and production analytics.
+            </p>
+
+            <a href="salt-production.html">
+                View Production →
+            </a>
+
+        </div>
+
+
+    </section>
+
+
+    <!-- QUICK INFORMATION -->
+
+    <section class="quick-info">
+
+        <h2>📊 Quick Information</h2>
+
+        <div class="info-grid">
+
+            <div class="info-box">
+
+                <strong>31°C</strong>
+
+                Weather
+
+            </div>
+
+
+            <div class="info-box">
+
+                <strong>20%</strong>
+
+                Rain Chance
+
+            </div>
+
+
+            <div class="info-box">
+
+                <strong>₹2,500</strong>
+
+                Tomato / Quintal
+
+            </div>
+
+
+            <div class="info-box">
+
+                <strong>12.5 T</strong>
+
+                Salt Production
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+</main>
+
+
+<!-- JAVASCRIPT -->
+
+<script>
+
+    // Get farmer name from registration
+
+    const farmerName =
+        localStorage.getItem("farmerName");
+
+
+    if (farmerName) {
+
+        document.getElementById("farmerName")
+            .textContent = farmerName;
+
+    }
+
+
+    // Logout
+
+    function logout() {
+
+        localStorage.removeItem("loggedIn");
+
+        window.location.href = "login.html";
+
+    }
+
+</script>
+
+
+</body>
+
+</html>

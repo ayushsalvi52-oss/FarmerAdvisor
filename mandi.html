@@ -1,0 +1,353 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mandi Prices | Farmer Advisory Platform</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f8f3;
+            color: #26352b;
+        }
+
+        header {
+            background: #176b3a;
+            color: white;
+            padding: 18px 7%;
+        }
+
+        header h2 {
+            margin: 0 0 12px;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin: 0 14px 0 0;
+            display: inline-block;
+            padding: 5px 0;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 30px auto;
+            padding: 0 18px;
+        }
+
+        .intro {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 3px 12px #0000000d;
+        }
+
+        .intro h1 {
+            color: #176b3a;
+            margin-top: 0;
+        }
+
+        .filters {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin: 25px 0;
+        }
+
+        .filters div {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        select, input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #cbd5cc;
+            border-radius: 7px;
+            background: white;
+            font-size: 15px;
+        }
+
+        .summary {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+            gap: 18px;
+            margin-bottom: 25px;
+        }
+
+        .card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 5px solid #25864c;
+            box-shadow: 0 3px 12px #0000000d;
+        }
+
+        .card p {
+            color: #647168;
+            margin-bottom: 8px;
+        }
+
+        .price {
+            color: #176b3a;
+            font-size: 25px;
+            font-weight: bold;
+        }
+
+        .table-box {
+            overflow-x: auto;
+            background: white;
+            border-radius: 10px;
+            padding: 15px;
+            box-shadow: 0 3px 12px #0000000d;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 600px;
+        }
+
+        th, td {
+            text-align: left;
+            padding: 14px;
+            border-bottom: 1px solid #e3eae4;
+        }
+
+        th {
+            background: #e7f3e9;
+            color: #176b3a;
+        }
+
+        .note {
+            margin-top: 20px;
+            padding: 15px;
+            background: #fff4d6;
+            border-radius: 8px;
+            line-height: 1.6;
+        }
+
+        footer {
+            background: #176b3a;
+            color: white;
+            text-align: center;
+            padding: 18px;
+            margin-top: 40px;
+        }
+
+        @media (max-width: 600px) {
+            header {
+                padding: 18px;
+            }
+
+            nav a {
+                margin-right: 10px;
+            }
+
+            .container {
+                margin-top: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h2>🌾 Farmer Advisory Platform</h2>
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="dashboard.html">Dashboard</a>
+        <a href="ai-assistant.html">AI Assistant</a>
+        <a href="crop-advisory.html">Crop Advisory</a>
+        <a href="weather.html">Weather</a>
+        <a href="mandi.html">Mandi Prices</a>
+    </nav>
+</header>
+
+<main class="container">
+
+    <section class="intro">
+        <h1>📈 Agricultural Mandi Prices</h1>
+        <p>
+            Check sample market prices for different crops and markets.
+            Compare minimum, maximum and modal prices.
+        </p>
+        <p><strong>Price unit:</strong> Indian Rupees per quintal (100 kg)</p>
+    </section>
+
+    <section class="filters">
+        <div>
+            <label for="cropFilter">Select Crop</label>
+            <select id="cropFilter" onchange="updatePrices()">
+                <option value="All">All Crops</option>
+                <option value="Tomato">Tomato</option>
+                <option value="Onion">Onion</option>
+                <option value="Wheat">Wheat</option>
+                <option value="Rice">Rice</option>
+                <option value="Cotton">Cotton</option>
+            </select>
+        </div>
+
+        <div>
+            <label for="marketFilter">Select Market</label>
+            <select id="marketFilter" onchange="updatePrices()">
+                <option value="All">All Markets</option>
+                <option value="Mumbai">Mumbai</option>
+                <option value="Nashik">Nashik</option>
+                <option value="Pune">Pune</option>
+                <option value="Nagpur">Nagpur</option>
+            </select>
+        </div>
+
+        <div>
+            <label for="searchCrop">Search Crop</label>
+            <input
+                type="text"
+                id="searchCrop"
+                placeholder="Enter crop name..."
+                oninput="updatePrices()"
+            >
+        </div>
+    </section>
+
+    <section class="summary">
+        <div class="card">
+            <p>Selected Crop</p>
+            <div class="price" id="selectedCrop">All Crops</div>
+        </div>
+
+        <div class="card">
+            <p>Market</p>
+            <div class="price" id="selectedMarket">All Markets</div>
+        </div>
+
+        <div class="card">
+            <p>Matching Records</p>
+            <div class="price" id="recordCount">20</div>
+        </div>
+    </section>
+
+    <section class="table-box">
+        <h2>Market Price Details</h2>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Crop</th>
+                    <th>Market</th>
+                    <th>Minimum Price</th>
+                    <th>Maximum Price</th>
+                    <th>Modal Price</th>
+                </tr>
+            </thead>
+
+            <tbody id="priceTable"></tbody>
+        </table>
+
+        <p id="noResults" style="display:none;">
+            No matching records found. Try another crop or market.
+        </p>
+    </section>
+
+    <div class="note">
+        <strong>⚠️ Project Demo:</strong>
+        All prices on this page are fictional sample data for educational
+        purposes. They are not live mandi prices and should not be used
+        for actual buying or selling decisions.
+    </div>
+
+</main>
+
+<footer>
+    <p>© 2026 AI-Powered Farmer Advisory and Knowledge-Sharing Platform</p>
+</footer>
+
+<script>
+    // Fictional sample data for the college project
+    const mandiData = [
+        {crop:"Tomato", market:"Mumbai", min:1800, max:3200, modal:2500},
+        {crop:"Tomato", market:"Nashik", min:1500, max:2800, modal:2200},
+        {crop:"Tomato", market:"Pune", min:1700, max:3000, modal:2400},
+        {crop:"Tomato", market:"Nagpur", min:1600, max:2900, modal:2300},
+
+        {crop:"Onion", market:"Mumbai", min:2000, max:3500, modal:2800},
+        {crop:"Onion", market:"Nashik", min:1800, max:3200, modal:2500},
+        {crop:"Onion", market:"Pune", min:1900, max:3300, modal:2600},
+        {crop:"Onion", market:"Nagpur", min:1700, max:3100, modal:2400},
+
+        {crop:"Wheat", market:"Mumbai", min:2300, max:2900, modal:2600},
+        {crop:"Wheat", market:"Nashik", min:2200, max:2800, modal:2500},
+        {crop:"Wheat", market:"Pune", min:2250, max:2850, modal:2550},
+        {crop:"Wheat", market:"Nagpur", min:2100, max:2750, modal:2450},
+
+        {crop:"Rice", market:"Mumbai", min:2800, max:3800, modal:3300},
+        {crop:"Rice", market:"Nashik", min:2600, max:3500, modal:3100},
+        {crop:"Rice", market:"Pune", min:2700, max:3700, modal:3200},
+        {crop:"Rice", market:"Nagpur", min:2500, max:3600, modal:3000},
+
+        {crop:"Cotton", market:"Mumbai", min:6500, max:7600, modal:7100},
+        {crop:"Cotton", market:"Nashik", min:6300, max:7400, modal:6900},
+        {crop:"Cotton", market:"Pune", min:6400, max:7500, modal:7000},
+        {crop:"Cotton", market:"Nagpur", min:6200, max:7300, modal:6800}
+    ];
+
+    function updatePrices() {
+        const crop = document.getElementById("cropFilter").value;
+        const market = document.getElementById("marketFilter").value;
+        const search = document.getElementById("searchCrop")
+            .value.trim().toLowerCase();
+
+        const filtered = mandiData.filter(item => {
+            return (crop === "All" || item.crop === crop) &&
+                   (market === "All" || item.market === market) &&
+                   item.crop.toLowerCase().includes(search);
+        });
+
+        document.getElementById("selectedCrop").textContent = crop;
+        document.getElementById("selectedMarket").textContent = market;
+        document.getElementById("recordCount").textContent = filtered.length;
+
+        const table = document.getElementById("priceTable");
+        table.innerHTML = "";
+
+        filtered.forEach(item => {
+            const row = document.createElement("tr");
+
+            [
+                item.crop,
+                item.market,
+                "₹" + item.min.toLocaleString("en-IN"),
+                "₹" + item.max.toLocaleString("en-IN"),
+                "₹" + item.modal.toLocaleString("en-IN")
+            ].forEach(value => {
+                const cell = document.createElement("td");
+                cell.textContent = value;
+                row.appendChild(cell);
+            });
+
+            table.appendChild(row);
+        });
+
+        document.getElementById("noResults").style.display =
+            filtered.length === 0 ? "block" : "none";
+    }
+
+    updatePrices();
+</script>
+
+</body>
+</html>

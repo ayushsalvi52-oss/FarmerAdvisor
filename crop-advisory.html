@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Crop Advisory - Farmer Advisory Platform</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f1f8e9;
+            color: #333;
+        }
+
+        header {
+            background: #2e7d32;
+            color: white;
+            padding: 18px 40px;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        nav h2 {
+            font-size: 22px;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin-left: 18px;
+            font-size: 14px;
+        }
+
+        nav a:hover {
+            text-decoration: underline;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1000px;
+            margin: 40px auto;
+        }
+
+        .heading {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .heading h1 {
+            color: #2e7d32;
+            margin-bottom: 10px;
+        }
+
+        .heading p {
+            color: #666;
+        }
+
+        .selection-box {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.1);
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 16px;
+        }
+
+        button {
+            width: 100%;
+            padding: 13px;
+            margin-top: 15px;
+            border: none;
+            border-radius: 6px;
+            background: #2e7d32;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #1b5e20;
+        }
+
+        #advisory {
+            display: none;
+        }
+
+        .advisory-title {
+            background: #2e7d32;
+            color: white;
+            padding: 20px;
+            border-radius: 10px 10px 0 0;
+        }
+
+        .advisory-title h2 {
+            margin-bottom: 5px;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .info-card {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        .info-card h3 {
+            color: #2e7d32;
+            margin-bottom: 10px;
+        }
+
+        .info-card p {
+            line-height: 1.6;
+        }
+
+        .note {
+            margin-top: 20px;
+            padding: 15px;
+            background: #fff3cd;
+            color: #856404;
+            border-radius: 8px;
+        }
+
+        footer {
+            margin-top: 50px;
+            background: #1b5e20;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+
+        @media (max-width: 700px) {
+
+            header {
+                padding: 15px;
+            }
+
+            nav {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            nav a {
+                margin: 5px;
+            }
+
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<section class="crop-ai-section">
+    <h2>🌱 AI Crop Recommendation</h2>
+    <p>Enter soil and weather details to get a crop prediction from FarmerAdvisor.</p>
+
+    <form id="cropForm">
+        <label for="N">Nitrogen (N)</label>
+        <input type="number" id="N" name="N" min="0" step="any" required>
+
+        <label for="P">Phosphorus (P)</label>
+        <input type="number" id="P" name="P" min="0" step="any" required>
+
+        <label for="K">Potassium (K)</label>
+        <input type="number" id="K" name="K" min="0" step="any" required>
+
+        <label for="temperature">Temperature (°C)</label>
+        <input type="number" id="temperature" name="temperature" step="any" required>
+
+        <label for="humidity">Humidity (%)</label>
+        <input type="number" id="humidity" name="humidity" min="0" max="100" step="any" required>
+
+        <label for="ph">Soil pH</label>
+        <input type="number" id="ph" name="ph" min="0" max="14" step="any" required>
+
+        <label for="rainfall">Rainfall (mm)</label>
+        <input type="number" id="rainfall" name="rainfall" min="0" step="any" required>
+
+        <button type="submit" id="recommendBtn">Recommend Crop</button>
+    </form>
+
+    <p id="cropResult" role="status" aria-live="polite"></p>
+</section>
+
+<style>
+.crop-ai-section {
+    max-width: 650px;
+    margin: 30px auto;
+    padding: 24px;
+    border-radius: 14px;
+    background: #f4fbf3;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+}
+.crop-ai-section h2 {
+    color: #216e39;
+}
+.crop-ai-section label {
+    display: block;
+    margin-top: 12px;
+    font-weight: 600;
+}
+.crop-ai-section input {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 11px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 7px;
+}
+.crop-ai-section button {
+    margin-top: 20px;
+    padding: 12px 18px;
+    background: #218838;
+    color: white;
+    border: none;
+    border-radius: 7px;
+    cursor: pointer;
+}
+#cropResult {
+    margin-top: 16px;
+    font-weight: 600;
+}
+</style>
+
+<header>
+
+    <nav>
+
+        <h2>🌾 Farmer Advisory Platform</h2>
+
+        <div>
+            <a href="index.html">Home</a>
+            <a href="dashboard.html">Dashboard</a>
+            <a href="ai-assistant.html">AI Assistant</a>
+            <a href="crop-advisory.html">Crop Advisory</a>
+            <a href="disease-detection.html">Disease Detection</a>
+        </div>
+
+    </nav>
+
+</header>
+
+
+<div class="container">
+
+    <div class="heading">
+
+        <h1>🌱 Crop Advisory</h1>
+
+        <p>
+            Select a crop to view basic farming recommendations.
+        </p>
+
+    </div>
+
+
+    <div class="selection-box">
+
+        <label for="crop">
+            Select Crop
+        </label>
+
+        <select id="crop">
+
+            <option value="">
+                -- Select Crop --
+            </option>
+
+            <option value="tomato">
+                Tomato
+            </option>
+
+            <option value="rice">
+                Rice
+            </option>
+
+            <option value="wheat">
+                Wheat
+            </option>
+
+            <option value="onion">
+                Onion
+            </option>
+
+            <option value="cotton">
+                Cotton
+            </option>
+
+        </select>
+
+        <button onclick="showAdvisory()">
+            🌱 Get Crop Advisory
+        </button>
+
+    </div>
+
+
+    <div id="advisory">
+
+        <div class="advisory-title">
+
+            <h2 id="cropName"></h2>
+
+            <p>
+                Basic crop information and advisory
+            </p>
+
+        </div>
+
+
+        <div class="info-grid">
+
+            <div class="info-card">
+
+                <h3>🌍 Soil Requirement</h3>
+
+                <p id="soil"></p>
+
+            </div>
+
+
+            <div class="info-card">
+
+                <h3>🌡️ Temperature</h3>
+
+                <p id="temperature"></p>
+
+            </div>
+
+
+            <div class="info-card">
+
+                <h3>💧 Water Requirement</h3>
+
+                <p id="water"></p>
+
+            </div>
+
+
+            <div class="info-card">
+
+                <h3>🌾 Fertilizer</h3>
+
+                <p id="fertilizer"></p>
+
+            </div>
+
+
+            <div class="info-card">
+
+                <h3>🌱 Sowing Information</h3>
+
+                <p id="sowing"></p>
+
+            </div>
+
+
+            <div class="info-card">
+
+                <h3>🧺 Harvesting</h3>
+
+                <p id="harvesting"></p>
+
+            </div>
+
+
+            <div class="info-card">
+
+                <h3>🐛 Common Pests</h3>
+
+                <p id="pests"></p>
+
+            </div>
+
+
+            <div class="info-card">
+
+                <h3>💡 Advisory</h3>
+
+                <p id="advice"></p>
+
+            </div>
+
+        </div>
+
+
+        <div class="note">
+
+            ⚠️ <b>Note:</b> This is a college-project demonstration.
+            Actual farming decisions should consider local soil,
+            climate, season and advice from agricultural experts.
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<footer>
+
+    <p>
+        © 2026 AI-Powered Farmer Advisory and Knowledge-Sharing Platform
+    </p>
+
+</footer>
+
+
+<script>
+
+function showAdvisory() {
+
+    const crop = document.getElementById("crop").value;
+
+    if (crop === "") {
+
+        alert("Please select a crop.");
+
+        return;
+
+    }
+
+
+    let data = {};
+
+
+    if (crop === "tomato") {
+
+        data = {
+
+            name: "🍅 Tomato",
+
+            soil: "Well-drained loamy soil rich in organic matter.",
+
+            temperature: "Approximately 18°C to 30°C.",
+
+            water: "Regular irrigation is required. Avoid waterlogging.",
+
+            fertilizer: "Use balanced NPK fertilizer along with organic manure based on soil requirements.",
+
+            sowing: "Sowing season depends on the local climate. Seedlings are generally transplanted after suitable growth.",
+
+            harvesting: "Generally begins around 60–90 days after transplanting depending on variety.",
+
+            pests: "Fruit borer, aphids, whiteflies and leaf miners.",
+
+            advice: "Monitor plants regularly and maintain proper spacing and irrigation."
+        };
+
+    }
+
+
+    else if (crop === "rice") {
+
+        data = {
+
+            name: "🌾 Rice",
+
+            soil: "Clayey or clay-loam soil with good water-holding capacity.",
+
+            temperature: "Approximately 20°C to 35°C.",
+
+            water: "Requires adequate water, especially during important growth stages.",
+
+            fertilizer: "Balanced nitrogen, phosphorus and potassium according to soil requirements.",
+
+            sowing: "Usually grown during the monsoon season in many parts of India.",
+
+            harvesting: "Generally harvested when grains mature and turn golden yellow.",
+
+            pests: "Stem borer, leaf folder and rice hopper.",
+
+            advice: "Maintain proper water management and monitor the crop for pests."
+        };
+
+    }
+
+
+    else if (crop === "wheat") {
+
+        data = {
+
+            name: "🌾 Wheat",
+
+            soil: "Well-drained loamy soil is generally suitable.",
+
+            temperature: "Approximately 15°C to 25°C during the growing season.",
+
+            water: "Requires irrigation at important growth stages.",
+
+            fertilizer: "Balanced NPK fertilizer based on soil testing.",
+
+            sowing: "Generally sown during the winter/rabi season in India.",
+
+            harvesting: "Usually harvested when the crop becomes mature and grains are dry.",
+
+            pests: "Aphids, termites and armyworms.",
+
+            advice: "Monitor soil moisture and inspect plants regularly for pests and diseases."
+        };
+
+    }
+
+
+    else if (crop === "onion") {
+
+        data = {
+
+            name: "🧅 Onion",
+
+            soil: "Well-drained sandy loam to loamy soil is suitable.",
+
+            temperature: "Approximately 13°C to 25°C.",
+
+            water: "Regular but moderate irrigation is required. Avoid waterlogging.",
+
+            fertilizer: "Organic manure and balanced NPK based on soil requirements.",
+
+            sowing: "Season varies according to the onion production region and variety.",
+
+            harvesting: "Harvest when bulbs reach suitable size and the tops begin to fall over.",
+
+            pests: "Thrips, onion maggot and other common field pests.",
+
+            advice: "Maintain good drainage and monitor plants regularly for thrips and diseases."
+        };
+
+    }
+
+
+    else if (crop === "cotton") {
+
+        data = {
+
+            name: "🌿 Cotton",
+
+            soil: "Deep, well-drained black soil is suitable in many cotton-growing areas.",
+
+            temperature: "Approximately 21°C to 30°C.",
+
+            water: "Requires adequate moisture, especially during flowering and boll development.",
+
+            fertilizer: "Balanced NPK and micronutrients according to soil testing.",
+
+            sowing: "Usually sown during the monsoon season in many parts of India.",
+
+            harvesting: "Bolls are harvested when they open and cotton becomes visible.",
+
+            pests: "Cotton bollworm, aphids, whiteflies and jassids.",
+
+            advice: "Regularly inspect the crop and use integrated pest management practices."
+        };
+
+    }
+
+
+    document.getElementById("cropName").innerText = data.name;
+
+    document.getElementById("soil").innerText = data.soil;
+
+    document.getElementById("temperature").innerText = data.temperature;
+
+    document.getElementById("water").innerText = data.water;
+
+    document.getElementById("fertilizer").innerText = data.fertilizer;
+
+    document.getElementById("sowing").innerText = data.sowing;
+
+    document.getElementById("harvesting").innerText = data.harvesting;
+
+    document.getElementById("pests").innerText = data.pests;
+
+    document.getElementById("advice").innerText = data.advice;
+
+
+    document.getElementById("advisory").style.display = "block";
+
+}
+
+</script>
+
+</body>
+
+<script>
+document.getElementById("cropForm").addEventListener("submit", async function (event) {
+    event.preventDefault();
+
+    const result = document.getElementById("cropResult");
+    const button = document.getElementById("recommendBtn");
+
+    const fields = ["N", "P", "K", "temperature", "humidity", "ph", "rainfall"];
+    const payload = {};
+
+    for (const field of fields) {
+        payload[field] = Number(document.getElementById(field).value);
+    }
+
+    result.textContent = "Analyzing soil and weather data...";
+    button.disabled = true;
+
+    try {
+        const response = await fetch("http://localhost:5000/api/crop-recommendation", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload)
+        });
+
+        const data = await response.json();
+
+        if (!response.ok || !data.success) {
+            throw new Error(data.message || "Crop recommendation failed.");
+        }
+
+        result.textContent = "Recommended crop: " + data.recommendedCrop;
+    } catch (error) {
+        console.error(error);
+        result.textContent = "Unable to get a recommendation. Check that the backend is running.";
+    } finally {
+        button.disabled = false;
+    }
+});
+</script>
+
+</html>

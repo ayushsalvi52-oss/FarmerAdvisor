@@ -1,0 +1,1083 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>AI Farmer Assistant</title>
+
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #eef7ee;
+            color: #333;
+        }
+
+
+        /* HEADER */
+
+        header {
+            background: #2e7d32;
+            color: white;
+            padding: 18px 40px;
+        }
+
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+
+        nav h2 {
+            margin: 0;
+        }
+
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin-left: 18px;
+            font-size: 14px;
+        }
+
+
+        /* MAIN */
+
+        .container {
+            width: 95%;
+            max-width: 1000px;
+            margin: 30px auto;
+        }
+
+
+        .title {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+
+        .title h1 {
+            color: #2e7d32;
+            margin-bottom: 8px;
+        }
+
+
+        /* CHAT BOX */
+
+        .chat-container {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.12);
+        }
+
+
+        .chat-header {
+            background: #388e3c;
+            color: white;
+            padding: 18px;
+        }
+
+
+        .chat-header h2 {
+            margin: 0 0 5px 0;
+        }
+
+
+        .online {
+            font-size: 13px;
+            color: #dcedc8;
+        }
+
+
+        /* CHAT MESSAGES */
+
+        .chat-box {
+            height: 480px;
+            padding: 20px;
+            overflow-y: auto;
+            background: #fafafa;
+        }
+
+
+        .message {
+            display: flex;
+            margin-bottom: 15px;
+        }
+
+
+        .message.user {
+            justify-content: flex-end;
+        }
+
+
+        .message.bot {
+            justify-content: flex-start;
+        }
+
+
+        .bubble {
+            max-width: 75%;
+            padding: 13px 16px;
+            border-radius: 15px;
+            line-height: 1.6;
+            white-space: pre-line;
+        }
+
+
+        .bot .bubble {
+            background: #e8f5e9;
+            border-bottom-left-radius: 3px;
+        }
+
+
+        .user .bubble {
+            background: #2e7d32;
+            color: white;
+            border-bottom-right-radius: 3px;
+        }
+
+
+        /* TYPING */
+
+        .typing {
+            display: none;
+            padding: 10px 20px;
+            color: #777;
+            font-size: 14px;
+        }
+
+
+        /* SUGGESTIONS */
+
+        .suggestions {
+            padding: 15px 20px;
+            border-top: 1px solid #ddd;
+            background: white;
+        }
+
+
+        .suggestions button {
+            width: auto;
+            margin: 4px;
+            padding: 8px 12px;
+            border: 1px solid #81c784;
+            background: white;
+            color: #2e7d32;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+
+
+        .suggestions button:hover {
+            background: #e8f5e9;
+        }
+
+
+        /* INPUT */
+
+        .input-area {
+            display: flex;
+            padding: 15px;
+            border-top: 1px solid #ddd;
+            background: white;
+        }
+
+
+        .input-area input {
+            flex: 1;
+            padding: 13px;
+            border: 1px solid #ccc;
+            border-radius: 25px;
+            font-size: 15px;
+            outline: none;
+        }
+
+
+        .send-btn {
+            margin-left: 10px;
+            padding: 12px 22px;
+            border: none;
+            border-radius: 25px;
+            background: #2e7d32;
+            color: white;
+            cursor: pointer;
+            font-size: 15px;
+        }
+
+
+        .send-btn:hover {
+            background: #1b5e20;
+        }
+
+
+        .clear-btn {
+            margin-left: 8px;
+            padding: 10px 15px;
+            border: 1px solid #ccc;
+            background: white;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+
+
+        /* INFO */
+
+        .info {
+            margin-top: 20px;
+            padding: 15px;
+            background: #fff3cd;
+            color: #856404;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+
+
+        footer {
+            margin-top: 40px;
+            background: #1b5e20;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+
+
+        @media (max-width: 700px) {
+
+            header {
+                padding: 15px;
+            }
+
+            nav {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            nav a {
+                margin: 5px;
+            }
+
+            .chat-box {
+                height: 450px;
+            }
+
+            .bubble {
+                max-width: 90%;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<header>
+
+    <nav>
+
+        <h2>🌾 Farmer Advisory Platform</h2>
+
+        <div>
+
+            <a href="index.html">Home</a>
+
+            <a href="dashboard.html">Dashboard</a>
+
+            <a href="ai-assistant.html">AI Assistant</a>
+
+            <a href="crop-advisory.html">Crop Advisory</a>
+
+            <a href="disease-detection.html">Disease Detection</a>
+
+        </div>
+
+    </nav>
+
+</header>
+
+
+
+<div class="container">
+
+
+    <div class="title">
+
+        <h1>🤖 AI Farmer Assistant</h1>
+
+        <p>
+            Ask questions about crops, diseases, irrigation, fertilizers,
+            weather and farming.
+        </p>
+
+    </div>
+
+
+
+    <div class="chat-container">
+
+
+        <div class="chat-header">
+
+            <h2>🌱 Smart Farming Assistant</h2>
+
+            <div class="online">
+                ● AI Assistant Online
+            </div>
+
+        </div>
+
+
+
+        <div id="chatBox" class="chat-box">
+
+
+            <div class="message bot">
+
+                <div class="bubble">
+
+                    👋 Hello! I am your AI Farmer Assistant.
+
+                    I can help you with:
+
+                    🌱 Crop selection
+                    💧 Irrigation
+                    🧪 Fertilizers
+                    🐛 Crop diseases
+                    🦟 Pests
+                    🌦️ Weather-related farming
+                    💰 Mandi prices
+                    🧂 Salt production
+
+                    What would you like to know?
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+
+        <div id="typing" class="typing">
+
+            🤖 AI Assistant is typing...
+
+        </div>
+
+
+
+        <div class="suggestions">
+
+            <button onclick="askQuestion('How should I care for tomato plants?')">
+                🍅 Tomato
+            </button>
+
+            <button onclick="askQuestion('My crop leaves are turning yellow. What should I do?')">
+                🍃 Yellow Leaves
+            </button>
+
+            <button onclick="askQuestion('How often should I irrigate my crop?')">
+                💧 Irrigation
+            </button>
+
+            <button onclick="askQuestion('What fertilizer should I use?')">
+                🧪 Fertilizer
+            </button>
+
+            <button onclick="askQuestion('How can I control pests?')">
+                🐛 Pests
+            </button>
+
+            <button onclick="askQuestion('Tell me about salt production')">
+                🧂 Salt
+            </button>
+
+        </div>
+
+
+
+        <div class="input-area">
+
+            <input
+                type="text"
+                id="userInput"
+                placeholder="Ask your farming question..."
+                onkeypress="handleEnter(event)"
+            >
+
+
+            <button
+                class="send-btn"
+                onclick="sendMessage()"
+            >
+                Send
+            </button>
+
+
+            <button
+                class="clear-btn"
+                onclick="clearChat()"
+            >
+                Clear
+            </button>
+
+        </div>
+
+
+    </div>
+
+
+
+    <div class="info">
+
+        ⚠️ <b>Project Demo:</b>
+        This assistant currently uses an agriculture knowledge base
+        built into the project. For actual farming decisions, verify
+        recommendations with qualified agricultural experts and local
+        conditions.
+
+    </div>
+
+
+</div>
+
+
+
+<footer>
+
+    <p>
+        © 2026 AI-Powered Farmer Advisory and Knowledge-Sharing Platform
+    </p>
+
+</footer>
+
+
+
+<script>
+
+
+/* ============================
+   CHAT FUNCTIONS
+============================ */
+
+
+function addMessage(text, type) {
+
+    var chatBox = document.getElementById("chatBox");
+
+
+    var message = document.createElement("div");
+
+    message.className = "message " + type;
+
+
+    var bubble = document.createElement("div");
+
+    bubble.className = "bubble";
+
+
+    bubble.innerText = text;
+
+
+    message.appendChild(bubble);
+
+    chatBox.appendChild(message);
+
+
+    chatBox.scrollTop = chatBox.scrollHeight;
+
+}
+
+
+
+/* ============================
+   AI RESPONSE
+============================ */
+
+
+function getAIResponse(question) {
+
+    var q = question.toLowerCase();
+
+
+    /* TOMATO */
+
+    if (q.includes("tomato")) {
+
+        return `🍅 Tomato Advisory
+
+Tomatoes generally need well-drained soil, adequate sunlight and regular but controlled irrigation.
+
+🌱 Soil:
+Well-drained loamy soil with good organic matter.
+
+💧 Water:
+Water regularly but avoid waterlogging.
+
+🧪 Fertilizer:
+Use balanced nutrients according to soil requirements.
+
+🐛 Monitor:
+Watch for fruit borer, aphids, whiteflies and leaf diseases.
+
+If you tell me the age of your tomato crop and the symptoms you are seeing, I can give more specific guidance.`;
+
+    }
+
+
+
+    /* YELLOW LEAVES */
+
+    if (
+        q.includes("yellow leaf") ||
+        q.includes("yellow leaves") ||
+        q.includes("leaves yellow")
+    ) {
+
+        return `🍃 Yellow Leaves
+
+Yellow leaves can have several possible causes:
+
+1. 💧 Overwatering
+2. 🧪 Nutrient deficiency
+3. 🌱 Poor soil drainage
+4. 🦠 Disease
+5. 🐛 Pest damage
+
+First check the soil moisture and inspect the leaves carefully.
+
+If older leaves become yellow first, nutrient deficiency may be one possibility.
+
+Tell me:
+• Which crop?
+• Are the older or newer leaves yellow?
+• How often do you water?
+
+Then I can narrow down the possible causes.`;
+
+    }
+
+
+
+    /* IRRIGATION */
+
+    if (
+        q.includes("water") ||
+        q.includes("irrigation") ||
+        q.includes("watering")
+    ) {
+
+        return `💧 Irrigation Advisory
+
+The correct irrigation frequency depends on the crop, soil type, temperature and growth stage.
+
+General recommendations:
+
+🌱 Sandy soil → may need more frequent irrigation.
+
+🌱 Clay soil → holds water longer.
+
+🌱 Hot weather → crops may need closer monitoring.
+
+🌧️ After rainfall → check soil moisture before irrigating again.
+
+Avoid excessive irrigation because waterlogging can damage roots.
+
+Tell me your crop and soil type for a more specific recommendation.`;
+
+    }
+
+
+
+    /* FERTILIZER */
+
+    if (
+        q.includes("fertilizer") ||
+        q.includes("fertiliser") ||
+        q.includes("npk")
+    ) {
+
+        return `🧪 Fertilizer Advisory
+
+Plants require nutrients such as:
+
+• Nitrogen (N)
+• Phosphorus (P)
+• Potassium (K)
+
+Nitrogen supports leaf and vegetative growth.
+
+Phosphorus supports root development and flowering.
+
+Potassium supports overall plant strength and crop quality.
+
+The correct fertilizer quantity depends on the crop and soil condition.
+
+🌱 Best practice:
+Use soil testing and follow locally recommended fertilizer doses rather than applying excessive fertilizer.
+
+Tell me your crop name and crop age, and I can explain the nutrient requirements.`;
+
+    }
+
+
+
+    /* PEST */
+
+    if (
+        q.includes("pest") ||
+        q.includes("insect") ||
+        q.includes("bug") ||
+        q.includes("worm")
+    ) {
+
+        return `🐛 Pest Management
+
+First identify the pest before selecting any control method.
+
+Common farming pests include:
+
+🦟 Aphids
+🪰 Whiteflies
+🐛 Caterpillars
+🪲 Beetles
+🦟 Thrips
+
+Integrated Pest Management (IPM) can include:
+
+1. Regular crop inspection
+2. Removing heavily affected plant parts
+3. Maintaining field hygiene
+4. Using biological controls where appropriate
+5. Using pesticides only when necessary and according to the label
+
+If you tell me the crop and describe the insect, I can help identify the likely problem.`;
+
+    }
+
+
+
+    /* DISEASE */
+
+    if (
+        q.includes("disease") ||
+        q.includes("fungus") ||
+        q.includes("fungal") ||
+        q.includes("spot") ||
+        q.includes("infection")
+    ) {
+
+        return `🦠 Crop Disease Advisory
+
+Common signs of crop disease can include:
+
+🍃 Leaf spots
+🟡 Yellowing
+🟤 Brown patches
+🥀 Wilting
+🍂 Leaf drying
+🌱 Abnormal plant growth
+
+Before treatment, identify the crop and symptoms.
+
+Please tell me:
+
+1. Crop name
+2. Plant age
+3. Main symptom
+4. Whether the problem is on leaves, stem, roots or fruit
+
+You can also use the Disease Detection page of this project for a basic demonstration.`;
+
+    }
+
+
+
+    /* WEATHER */
+
+    if (
+        q.includes("weather") ||
+        q.includes("rain") ||
+        q.includes("temperature") ||
+        q.includes("hot") ||
+        q.includes("cold")
+    ) {
+
+        return `🌦️ Weather Advisory
+
+Weather can affect irrigation, spraying, sowing and harvesting.
+
+🌧️ Before heavy rain:
+Avoid unnecessary irrigation and protect harvested produce.
+
+☀️ During very hot weather:
+Monitor soil moisture and crop stress.
+
+💨 During strong winds:
+Check plants, supports and structures.
+
+🌡️ During temperature changes:
+Monitor sensitive crops carefully.
+
+For real-time weather information, the Weather Advisory module can later be connected to a live weather API.
+
+Tell me your location and crop for a more useful weather-related recommendation.`;
+
+    }
+
+
+
+    /* MANDI */
+
+    if (
+        q.includes("mandi") ||
+        q.includes("market price") ||
+        q.includes("price") ||
+        q.includes("sell")
+    ) {
+
+        return `💰 Mandi Advisory
+
+Mandi prices can change every day based on:
+
+• Supply and demand
+• Crop quality
+• Market location
+• Season
+• Transportation
+• Arrival quantity
+
+Our Mandi Prices module will be used to display crop prices.
+
+For the project demonstration, we can later connect it to a market-price data source.
+
+Tell me which crop you want to check.`;
+
+    }
+
+
+
+    /* SALT */
+
+    if (
+        q.includes("salt") ||
+        q.includes("salt production") ||
+        q.includes("salt pan")
+    ) {
+
+        return `🧂 Salt Production Advisory
+
+Salt production generally depends on:
+
+☀️ Sunlight
+💨 Evaporation
+🌧️ Rainfall
+💧 Brine concentration
+🌊 Water management
+🧂 Crystallization
+
+For our Wadala Salt Pan project, useful records can include:
+
+• Daily production
+• Monthly production
+• Yearly production
+• Salt stock
+• Water/brine information
+• Weather conditions
+• Production cost
+• Sales
+
+The Salt Production module will be one dedicated section of our platform.`;
+
+    }
+
+
+
+    /* CROP */
+
+    if (
+        q.includes("crop") ||
+        q.includes("plant") ||
+        q.includes("farming") ||
+        q.includes("agriculture")
+    ) {
+
+        return `🌾 Farming Advisory
+
+I can help you with:
+
+🍅 Tomato
+🌾 Rice
+🌾 Wheat
+🧅 Onion
+🌿 Cotton
+
+I can also help with:
+
+💧 Irrigation
+🧪 Fertilizers
+🐛 Pests
+🦠 Diseases
+🌦️ Weather
+💰 Market prices
+🧂 Salt production
+
+Please ask a specific question, such as:
+
+"My tomato leaves are yellow."
+
+or
+
+"How much water does rice need?"`;
+
+    }
+
+
+
+    /* GREETING */
+
+    if (
+        q.includes("hello") ||
+        q.includes("hi") ||
+        q.includes("hey") ||
+        q.includes("namaste")
+    ) {
+
+        return `👋 Hello!
+
+Welcome to the AI Farmer Assistant.
+
+I'm here to help with farming-related questions.
+
+You can ask me about crops, irrigation, fertilizers, diseases, pests, weather, mandi prices or salt production.
+
+What would you like help with today?`;
+
+    }
+
+
+
+    /* THANK YOU */
+
+    if (
+        q.includes("thank") ||
+        q.includes("thanks")
+    ) {
+
+        return `😊 You're welcome!
+
+I'm happy to help.
+
+If you have another farming question, just ask me. 🌱`;
+
+    }
+
+
+
+    /* DEFAULT */
+
+    return `🤖 I understand that you have a farming-related question.
+
+I can currently help with:
+
+🌱 Crop Advisory
+💧 Irrigation
+🧪 Fertilizers
+🐛 Pests
+🦠 Diseases
+🌦️ Weather
+💰 Mandi Prices
+🧂 Salt Production
+
+Try asking something like:
+
+"My tomato leaves are turning yellow."
+
+or
+
+"How often should I water wheat?"
+
+or
+
+"What fertilizer is needed for rice?"`;
+
+}
+
+
+
+/* ============================
+   SEND MESSAGE
+============================ */
+
+
+function sendMessage() {
+
+    var input = document.getElementById("userInput");
+
+    var question = input.value.trim();
+
+
+    if (question === "") {
+
+        return;
+
+    }
+
+
+    addMessage(question, "user");
+
+
+    input.value = "";
+
+
+    document.getElementById("typing").style.display = "block";
+
+
+    setTimeout(function() {
+
+        var response = getAIResponse(question);
+
+
+        document.getElementById("typing").style.display = "none";
+
+
+        addMessage(response, "bot");
+
+
+    }, 800);
+
+}
+
+async function sendMessage() {
+    const input = document.getElementById("userInput");
+    const typing = document.getElementById("typing");
+
+    const question = input.value.trim();
+
+    if (!question) {
+        return;
+    }
+
+    addMessage(question, "user");
+    input.value = "";
+
+    typing.style.display = "block";
+
+    try {
+        const response = await fetch("http://localhost:5000/api/assistant", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                question: question
+            })
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            throw new Error(data.answer || "Unable to get a response.");
+        }
+
+        addMessage(data.answer, "bot");
+
+    } catch (error) {
+        console.error("Backend connection error:", error);
+
+        addMessage(
+            "Sorry, I could not connect to the backend. Please make sure the FarmerAdvisor server is running on port 5000 and try again.",
+            "bot"
+        );
+
+    } finally {
+        typing.style.display = "none";
+    }
+}
+
+
+
+/* ============================
+   QUICK QUESTIONS
+============================ */
+
+
+function askQuestion(question) {
+
+    document.getElementById("userInput").value = question;
+
+    sendMessage();
+
+}
+
+
+
+/* ============================
+   ENTER KEY
+============================ */
+
+
+function handleEnter(event) {
+
+    if (event.key === "Enter") {
+
+        sendMessage();
+
+    }
+
+}
+
+
+
+/* ============================
+   CLEAR CHAT
+============================ */
+
+
+function clearChat() {
+
+    var chatBox = document.getElementById("chatBox");
+
+
+    chatBox.innerHTML = `
+
+        <div class="message bot">
+
+            <div class="bubble">
+
+                👋 Hello! I am your AI Farmer Assistant.
+
+                How can I help you today? 🌱
+
+            </div>
+
+        </div>
+
+    `;
+
+}
+
+</script>
+
+
+</body>
+
+</html>0

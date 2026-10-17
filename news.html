@@ -1,0 +1,346 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agriculture News | Farmer Advisory Platform</title>
+
+    <style>
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f3f8f2;
+            color: #26352b;
+        }
+
+        header {
+            background: #176b3a;
+            color: white;
+            padding: 18px 6%;
+        }
+
+        header h2 { margin: 0 0 12px; }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin-right: 14px;
+            display: inline-block;
+            padding: 5px 0;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 30px auto;
+            padding: 0 18px;
+        }
+
+        .hero, .news-card {
+            background: white;
+            padding: 22px;
+            border-radius: 12px;
+            box-shadow: 0 3px 12px #0000000d;
+        }
+
+        .hero { margin-bottom: 25px; }
+
+        h1, h2 { color: #176b3a; }
+
+        .hero h1 { margin-top: 0; }
+
+        .filters {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 14px;
+            margin-bottom: 24px;
+        }
+
+        .filters input, .filters select {
+            flex: 1;
+            min-width: 200px;
+            padding: 12px;
+            border: 1px solid #cbd7cd;
+            border-radius: 7px;
+            font-size: 15px;
+            background: white;
+        }
+
+        .news-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 20px;
+        }
+
+        .news-card {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .news-icon {
+            font-size: 38px;
+            background: #e7f3e9;
+            padding: 18px;
+            border-radius: 9px;
+            text-align: center;
+        }
+
+        .category {
+            color: #176b3a;
+            font-size: 13px;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .news-card h3 {
+            margin: 0;
+            line-height: 1.4;
+        }
+
+        .news-card p {
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        .news-date {
+            font-size: 13px;
+            color: #69766c;
+        }
+
+        .news-card button {
+            align-self: flex-start;
+            border: none;
+            border-radius: 6px;
+            padding: 10px 14px;
+            background: #176b3a;
+            color: white;
+            cursor: pointer;
+            margin-top: auto;
+        }
+
+        .news-card button:hover { background: #10552d; }
+
+        .empty {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .notice {
+            margin-top: 25px;
+            background: #fff4d6;
+            padding: 15px;
+            border-radius: 8px;
+            line-height: 1.6;
+        }
+
+        footer {
+            background: #176b3a;
+            color: white;
+            text-align: center;
+            padding: 18px;
+            margin-top: 40px;
+        }
+
+        @media (max-width: 600px) {
+            header { padding: 18px; }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h2>🌾 Farmer Advisory Platform</h2>
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="dashboard.html">Dashboard</a>
+        <a href="ai-assistant.html">AI Assistant</a>
+        <a href="crop-advisory.html">Crop Advisory</a>
+        <a href="weather.html">Weather</a>
+        <a href="mandi.html">Mandi Prices</a>
+        <a href="knowledge-sharing.html">Knowledge Sharing</a>
+        <a href="news.html">Agriculture News</a>
+    </nav>
+</header>
+
+<main class="container">
+
+    <section class="hero">
+        <h1>📰 Agriculture News & Updates</h1>
+        <p>
+            Explore farming technology, crop management, government schemes,
+            weather awareness, and sustainable agriculture.
+        </p>
+    </section>
+
+    <section class="filters">
+        <input
+            type="search"
+            id="searchInput"
+            placeholder="Search agriculture news..."
+            oninput="displayNews()"
+        >
+
+        <select id="categoryFilter" onchange="displayNews()">
+            <option value="All">All Categories</option>
+            <option value="Crop Management">Crop Management</option>
+            <option value="Technology">Technology</option>
+            <option value="Government Schemes">Government Schemes</option>
+            <option value="Weather">Weather</option>
+            <option value="Sustainable Farming">Sustainable Farming</option>
+        </select>
+    </section>
+
+    <section id="newsGrid" class="news-grid"></section>
+
+    <p id="noResults" class="empty" style="display:none;">
+        No news items match your search. Try another keyword or category.
+    </p>
+
+    <div class="notice">
+        <strong>Demo notice:</strong> These are sample educational news cards,
+        not verified current news reports. Check official sources for current
+        announcements, deadlines, weather alerts, and scheme eligibility.
+    </div>
+
+</main>
+
+<footer>
+    <p>© 2026 AI-Powered Farmer Advisory and Knowledge-Sharing Platform</p>
+</footer>
+
+<script>
+    const newsData = [
+        {
+            title: "Practical Crop Monitoring for Farmers",
+            category: "Crop Management",
+            date: "Sample project update",
+            icon: "🌱",
+            description:
+                "Inspect leaves, stems and soil regularly. Early identification of crop stress can help farmers seek advice before a problem spreads."
+        },
+        {
+            title: "How AI Can Support Agriculture",
+            category: "Technology",
+            date: "Sample project update",
+            icon: "🤖",
+            description:
+                "AI tools can help organize farming information, identify possible crop issues and provide decision-support suggestions."
+        },
+        {
+            title: "Check Government Scheme Eligibility",
+            category: "Government Schemes",
+            date: "Sample project update",
+            icon: "🏛️",
+            description:
+                "Farmers should review eligibility, required documents and application dates through official government portals before applying."
+        },
+        {
+            title: "Prepare for Changing Weather",
+            category: "Weather",
+            date: "Sample project update",
+            icon: "🌦️",
+            description:
+                "Monitor reliable local forecasts and protect harvested crops, equipment and stored produce when heavy rain or strong winds are expected."
+        },
+        {
+            title: "Improve Soil Health with Sustainable Practices",
+            category: "Sustainable Farming",
+            date: "Sample project update",
+            icon: "🌿",
+            description:
+                "Soil testing, suitable crop rotation and carefully managed organic matter can support long-term soil health."
+        },
+        {
+            title: "Use Water Efficiently on the Farm",
+            category: "Crop Management",
+            date: "Sample project update",
+            icon: "💧",
+            description:
+                "Check soil moisture and crop water needs before irrigation. Drip irrigation may help reduce water waste for suitable crops."
+        },
+        {
+            title: "Digital Tools for Market Information",
+            category: "Technology",
+            date: "Sample project update",
+            icon: "📱",
+            description:
+                "Digital market-information tools can help farmers compare available price information before deciding where to sell produce."
+        },
+        {
+            title: "Reduce Waste and Reuse Farm Resources",
+            category: "Sustainable Farming",
+            date: "Sample project update",
+            icon: "♻️",
+            description:
+                "Where safe and suitable, composting crop residues and managing farm inputs carefully can reduce waste and support resource efficiency."
+        }
+    ];
+
+    function displayNews() {
+        const search = document.getElementById("searchInput")
+            .value.trim().toLowerCase();
+
+        const category = document.getElementById("categoryFilter").value;
+
+        const filtered = newsData.filter(item => {
+            const searchableText =
+                (item.title + " " + item.description + " " + item.category)
+                .toLowerCase();
+
+            return searchableText.includes(search) &&
+                   (category === "All" || item.category === category);
+        });
+
+        const grid = document.getElementById("newsGrid");
+        grid.replaceChildren();
+
+        filtered.forEach(item => {
+            const card = document.createElement("article");
+            card.className = "news-card";
+
+            const icon = document.createElement("div");
+            icon.className = "news-icon";
+            icon.textContent = item.icon;
+
+            const categoryLabel = document.createElement("div");
+            categoryLabel.className = "category";
+            categoryLabel.textContent = item.category;
+
+            const title = document.createElement("h3");
+            title.textContent = item.title;
+
+            const date = document.createElement("div");
+            date.className = "news-date";
+            date.textContent = item.date;
+
+            const description = document.createElement("p");
+            description.textContent = item.description;
+
+            const button = document.createElement("button");
+            button.type = "button";
+            button.textContent = "Read More";
+            button.addEventListener("click", () => {
+                alert(item.title + "\n\n" + item.description);
+            });
+
+            card.append(
+                icon, categoryLabel, title, date, description, button
+            );
+
+            grid.appendChild(card);
+        });
+
+        document.getElementById("noResults").style.display =
+            filtered.length === 0 ? "block" : "none";
+    }
+
+    displayNews();
+</script>
+
+</body>
+</html>

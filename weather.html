@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Weather Advisory</title>
+
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #eef7ee;
+            color: #333;
+        }
+
+
+        header {
+            background: #2e7d32;
+            color: white;
+            padding: 18px 40px;
+        }
+
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+
+        nav h2 {
+            margin: 0;
+        }
+
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin-left: 18px;
+            font-size: 14px;
+        }
+
+
+        nav a:hover {
+            text-decoration: underline;
+        }
+
+
+        .container {
+            width: 90%;
+            max-width: 1000px;
+            margin: 35px auto;
+        }
+
+
+        .title {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+
+        .title h1 {
+            color: #2e7d32;
+        }
+
+
+        .weather-box {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+
+        .location {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+
+        .location h2 {
+            color: #2e7d32;
+        }
+
+
+        .weather-main {
+            text-align: center;
+            padding: 20px;
+            background: #e8f5e9;
+            border-radius: 10px;
+        }
+
+
+        .weather-icon {
+            font-size: 55px;
+        }
+
+
+        .temperature {
+            font-size: 45px;
+            font-weight: bold;
+            color: #2e7d32;
+        }
+
+
+        .weather-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+
+        .card {
+            background: white;
+            padding: 20px;
+            text-align: center;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+
+        .card h3 {
+            color: #2e7d32;
+            font-size: 15px;
+        }
+
+
+        .card p {
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+
+        .advisory {
+            margin-top: 25px;
+            padding: 20px;
+            background: #fff3cd;
+            border-left: 5px solid #f0ad4e;
+            border-radius: 8px;
+        }
+
+
+        .advisory h2 {
+            margin-top: 0;
+            color: #856404;
+        }
+
+
+        .crop-section {
+            margin-top: 25px;
+            padding: 20px;
+            background: #f5f5f5;
+            border-radius: 8px;
+        }
+
+
+        select {
+            width: 100%;
+            padding: 12px;
+            margin-top: 10px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 16px;
+        }
+
+
+        button {
+            width: 100%;
+            padding: 13px;
+            margin-top: 15px;
+            border: none;
+            border-radius: 6px;
+            background: #2e7d32;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+
+        button:hover {
+            background: #1b5e20;
+        }
+
+
+        #cropAdvice {
+            margin-top: 20px;
+            padding: 15px;
+            background: #e8f5e9;
+            border-radius: 8px;
+            display: none;
+        }
+
+
+        footer {
+            margin-top: 50px;
+            background: #1b5e20;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+
+
+        @media (max-width: 800px) {
+
+            .weather-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            nav {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+        }
+
+
+        @media (max-width: 500px) {
+
+            .weather-grid {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<header>
+
+    <nav>
+
+        <h2>🌾 Farmer Advisory Platform</h2>
+
+        <div>
+
+            <a href="index.html">Home</a>
+
+            <a href="dashboard.html">Dashboard</a>
+
+            <a href="ai-assistant.html">AI Assistant</a>
+
+            <a href="crop-advisory.html">Crop Advisory</a>
+
+            <a href="disease-detection.html">Disease Detection</a>
+
+            <a href="weather.html">Weather</a>
+
+        </div>
+
+    </nav>
+
+</header>
+
+
+
+<div class="container">
+
+
+    <div class="title">
+
+        <h1>🌦️ Weather Advisory</h1>
+
+        <p>
+            Weather information and farming recommendations
+        </p>
+
+    </div>
+
+
+
+    <div class="weather-box">
+
+
+        <div class="location">
+
+            <h2>📍 Wadala / Mumbai</h2>
+
+            <p>Today's Demonstration Weather</p>
+
+        </div>
+
+
+
+        <div class="weather-main">
+
+            <div class="weather-icon">
+                ☀️
+            </div>
+
+            <div class="temperature">
+                31°C
+            </div>
+
+            <p>
+                Partly Sunny
+            </p>
+
+        </div>
+
+
+
+        <div class="weather-grid">
+
+
+            <div class="card">
+
+                <h3>💧 Humidity</h3>
+
+                <p>68%</p>
+
+            </div>
+
+
+            <div class="card">
+
+                <h3>🌧️ Rain Chance</h3>
+
+                <p>20%</p>
+
+            </div>
+
+
+            <div class="card">
+
+                <h3>💨 Wind Speed</h3>
+
+                <p>14 km/h</p>
+
+            </div>
+
+
+            <div class="card">
+
+                <h3>🌡️ Feels Like</h3>
+
+                <p>33°C</p>
+
+            </div>
+
+
+        </div>
+
+
+
+        <div class="advisory">
+
+            <h2>🌱 Farming Advisory</h2>
+
+            <p>
+                ☀️ The weather is suitable for routine crop monitoring.
+            </p>
+
+            <p>
+                💧 Check soil moisture before irrigation.
+            </p>
+
+            <p>
+                🌧️ Since the rain probability is low, irrigation may be
+                considered according to soil moisture and crop requirement.
+            </p>
+
+            <p>
+                🐛 Monitor crops regularly for pest activity.
+            </p>
+
+            <p>
+                🌾 Avoid unnecessary spraying during strong wind or before rainfall.
+            </p>
+
+        </div>
+
+
+
+        <div class="crop-section">
+
+            <h2>🌱 Crop-Specific Weather Advice</h2>
+
+            <label>
+                Select Crop
+            </label>
+
+
+            <select id="crop">
+
+                <option value="">
+                    -- Select Crop --
+                </option>
+
+                <option value="tomato">
+                    Tomato
+                </option>
+
+                <option value="rice">
+                    Rice
+                </option>
+
+                <option value="wheat">
+                    Wheat
+                </option>
+
+                <option value="onion">
+                    Onion
+                </option>
+
+                <option value="cotton">
+                    Cotton
+                </option>
+
+            </select>
+
+
+            <button onclick="showCropAdvice()">
+                🌦️ Get Weather Advice
+            </button>
+
+
+            <div id="cropAdvice"></div>
+
+        </div>
+
+
+    </div>
+
+</div>
+
+
+
+<footer>
+
+    <p>
+        © 2026 AI-Powered Farmer Advisory and Knowledge-Sharing Platform
+    </p>
+
+</footer>
+
+
+
+<script>
+
+
+function showCropAdvice() {
+
+    var crop =
+        document.getElementById("crop").value;
+
+
+    var advice =
+        document.getElementById("cropAdvice");
+
+
+    if (crop === "") {
+
+        alert("Please select a crop.");
+
+        return;
+
+    }
+
+
+    var message = "";
+
+
+    if (crop === "tomato") {
+
+        message =
+            "🍅 Tomato: Monitor soil moisture carefully. Avoid excessive irrigation. During humid weather, regularly check leaves for fungal disease symptoms.";
+
+    }
+
+
+    else if (crop === "rice") {
+
+        message =
+            "🌾 Rice: Maintain appropriate water levels according to the crop stage. Monitor the field after rainfall and check for pest or disease activity.";
+
+    }
+
+
+    else if (crop === "wheat") {
+
+        message =
+            "🌾 Wheat: Avoid unnecessary irrigation when soil moisture is adequate. Monitor temperature and crop condition during the growing period.";
+
+    }
+
+
+    else if (crop === "onion") {
+
+        message =
+            "🧅 Onion: Avoid waterlogging. Good drainage is important. Monitor leaves for disease symptoms during humid or wet conditions.";
+
+    }
+
+
+    else if (crop === "cotton") {
+
+        message =
+            "🌿 Cotton: Monitor soil moisture and inspect plants regularly for pests. Strong winds and heavy rainfall may affect flowering and boll development.";
+
+    }
+
+
+    advice.innerHTML = message;
+
+    advice.style.display = "block";
+
+}
+
+
+</script>
+
+
+</body>
+
+</html>

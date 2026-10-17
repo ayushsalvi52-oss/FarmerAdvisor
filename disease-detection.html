@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Disease Detection</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f1f8e9;
+            margin: 0;
+        }
+
+        header {
+            background: #2e7d32;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        nav {
+            margin-top: 15px;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin: 10px;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 800px;
+            margin: 40px auto;
+        }
+
+        .box {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.15);
+        }
+
+        h1 {
+            color: #2e7d32;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-top: 20px;
+            margin-bottom: 8px;
+        }
+
+        select,
+        textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 16px;
+        }
+
+        textarea {
+            height: 100px;
+        }
+
+        button {
+            width: 100%;
+            margin-top: 20px;
+            padding: 14px;
+            background: #2e7d32;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #1b5e20;
+        }
+
+        #result {
+            display: none;
+            margin-top: 25px;
+            padding: 20px;
+            background: #e8f5e9;
+            border-left: 5px solid #2e7d32;
+        }
+
+        #result h2 {
+            color: #2e7d32;
+        }
+
+        footer {
+            margin-top: 50px;
+            background: #1b5e20;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+
+    <h2>🌾 AI-Powered Farmer Advisory Platform</h2>
+
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="dashboard.html">Dashboard</a>
+        <a href="ai-assistant.html">AI Assistant</a>
+        <a href="crop-advisory.html">Crop Advisory</a>
+        <a href="disease-detection.html">Disease Detection</a>
+    </nav>
+
+</header>
+
+
+<div class="container">
+
+    <div class="box">
+
+        <h1>🌿 Crop Disease Detection</h1>
+
+        <p>
+            Select a crop and enter the symptoms to get a basic disease suggestion.
+        </p>
+
+
+        <label>Select Crop</label>
+
+        <select id="crop">
+
+            <option value="">-- Select Crop --</option>
+
+            <option value="tomato">Tomato</option>
+
+            <option value="rice">Rice</option>
+
+            <option value="wheat">Wheat</option>
+
+            <option value="onion">Onion</option>
+
+            <option value="cotton">Cotton</option>
+
+        </select>
+
+
+        <label>Enter Symptoms</label>
+
+        <textarea
+            id="symptoms"
+            placeholder="Example: brown spots on leaves">
+        </textarea>
+
+
+        <button onclick="detectDisease()">
+            🔍 Detect Disease
+        </button>
+
+
+        <div id="result">
+
+            <h2 id="diseaseName"></h2>
+
+            <p>
+                <b>Symptoms:</b>
+                <span id="diseaseSymptoms"></span>
+            </p>
+
+            <p>
+                <b>Suggested Treatment:</b>
+                <span id="treatment"></span>
+            </p>
+
+            <p>
+                <b>Prevention:</b>
+                <span id="prevention"></span>
+            </p>
+
+            <p>
+                ⚠️ This is a project demonstration. Please verify the
+                result with an agriculture expert.
+            </p>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<footer>
+
+    <p>
+        © 2026 AI-Powered Farmer Advisory and Knowledge-Sharing Platform
+    </p>
+
+</footer>
+
+
+<script>
+
+function detectDisease() {
+
+    var crop = document.getElementById("crop").value;
+
+    var symptoms = document.getElementById("symptoms").value.toLowerCase();
+
+    if (crop === "" || symptoms.trim() === "") {
+
+        alert("Please select a crop and enter symptoms.");
+
+        return;
+    }
+
+
+    var disease = "";
+    var treatment = "";
+    var prevention = "";
+
+
+    if (crop === "tomato") {
+
+        if (symptoms.includes("brown") ||
+            symptoms.includes("spot")) {
+
+            disease = "Possible Tomato Leaf Spot";
+
+            treatment =
+                "Remove affected leaves and follow locally recommended disease-control practices.";
+
+            prevention =
+                "Maintain proper spacing and avoid excessive moisture on leaves.";
+
+        } else {
+
+            disease = "Possible Tomato Disease";
+
+            treatment =
+                "Inspect the plant and consult an agriculture expert.";
+
+            prevention =
+                "Maintain proper irrigation and field hygiene.";
+        }
+    }
+
+
+    else if (crop === "rice") {
+
+        disease = "Possible Rice Brown Spot";
+
+        treatment =
+            "Maintain balanced nutrition and follow recommended disease-management practices.";
+
+        prevention =
+            "Use healthy seeds and maintain proper water management.";
+    }
+
+
+    else if (crop === "wheat") {
+
+        disease = "Possible Wheat Rust";
+
+        treatment =
+            "Monitor the crop and use locally recommended disease-management practices.";
+
+        prevention =
+            "Use suitable varieties and regularly inspect the crop.";
+    }
+
+
+    else if (crop === "onion") {
+
+        disease = "Possible Onion Purple Blotch";
+
+        treatment =
+            "Remove heavily infected leaves and follow recommended disease-control practices.";
+
+        prevention =
+            "Maintain proper spacing, drainage and field hygiene.";
+    }
+
+
+    else if (crop === "cotton") {
+
+        disease = "Possible Cotton Wilt";
+
+        treatment =
+            "Remove severely affected plants where appropriate and seek expert advice.";
+
+        prevention =
+            "Use healthy planting material and maintain proper soil management.";
+    }
+
+
+    document.getElementById("diseaseName").innerText = disease;
+
+    document.getElementById("diseaseSymptoms").innerText =
+        symptoms;
+
+    document.getElementById("treatment").innerText =
+        treatment;
+
+    document.getElementById("prevention").innerText =
+        prevention;
+
+    document.getElementById("result").style.display = "block";
+
+}
+
+</script>
+
+</body>
+</html>
